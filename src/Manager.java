@@ -11,15 +11,15 @@ public final class Manager {
 
     static Set<City> cities = new HashSet<>();
 
-    static Areable paramsToAreable(List<String> list) {
-        Areable areable = null;
+    static LocatedInTheCity paramsToLocatedInTheCity(List<String> list) {
+        LocatedInTheCity locatedInTheCity = null;
         if (list.get(1).equals("Street")) {
-            areable = new Street(list.get(3), Double.parseDouble(list.get(4)), Double.parseDouble(list.get(5)));
+            locatedInTheCity = new Street(list.get(3), Double.parseDouble(list.get(4)), Double.parseDouble(list.get(5)));
         } else if (list.get(1).equals("Park")) {
-            areable = new Park(list.get(3), Double.parseDouble(list.get(4)), Double.parseDouble(list.get(5)));
+            locatedInTheCity = new Park(list.get(3), Double.parseDouble(list.get(4)), Double.parseDouble(list.get(5)));
         }
-        areable.setCityName(list.get(0));
-        return areable;
+        locatedInTheCity.setCityName(list.get(0));
+        return locatedInTheCity;
     }
 
     static List<String> parsingParamsFromText(String text) {
@@ -31,9 +31,9 @@ public final class Manager {
     static Set<City> getFromBase(String fileName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
         return reader.lines()
-                .map(a -> parsingParamsFromText(a))                                                                //тут мы получили лист стрингов с полями для каждого строения
-                .map(a -> paramsToAreable(a))                                                                            //этот метод сделал нужные строения и вернул их как Areable
-                .collect(Collectors.groupingBy(Areable::getCityName))                                                    //тут мы сгруппировали Areable по городам, в которых они должны лежать, получили мапу
+                .map(Manager::parsingParamsFromText)                                                                //тут мы получили лист стрингов с полями для каждого строения
+                .map(Manager::paramsToLocatedInTheCity)                                                                            //этот метод сделал нужные строения и вернул их как Areable
+                .collect(Collectors.groupingBy(LocatedInTheCity::getCityName))                                                    //тут мы сгруппировали Areable по городам, в которых они должны лежать, получили мапу
                 .entrySet().stream()
                 .map(a -> new City(a.getKey()).setAllBildings(a.getValue()))                                             //из каждой пары (название города, лист со строениями) делаем город с улицами, парками
                 .collect(Collectors.toSet());

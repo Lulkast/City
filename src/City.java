@@ -41,7 +41,7 @@ public class City {
         return allBildings;
     }
 
-    public City setAllBildings(List<Areable> list) {
+    public City setAllBildings(List<LocatedInTheCity> list) {
         list.stream()
                 .forEach(a -> {
                     if (a.getClass().toString().equals("class Street")) AddStreetToCity((Street) a);
