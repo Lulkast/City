@@ -40,7 +40,7 @@ public final class Manager {
     }
 
     public static void main(String[] args) throws IOException {
-        cities = getFromBase("C:\\practice\\CityManager\\src\\base.txt");
+        cities = getFromBase("C:\\practice\\City\\src\\base.txt");
         cities.stream()
                 .forEach(a -> System.out.println(a.getName() + " " + a.getStreets()));
         cities.stream()
