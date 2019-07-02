@@ -3,7 +3,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-public class Park implements Areable {
+public class Park implements Areable, LocatedInTheCity {
     private final UUID id;
     private String name;
     private double length;

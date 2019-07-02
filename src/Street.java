@@ -3,7 +3,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-public class Street implements Areable {
+public class Street implements Areable, LocatedInTheCity {
 
     private final UUID id;
     private String name;
