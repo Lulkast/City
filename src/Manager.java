@@ -6,6 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static javafx.scene.input.KeyCode.L;
+
 
 public final class Manager {
     private Manager() {
@@ -25,11 +27,11 @@ public final class Manager {
        if (list.get(1).equals("Street")) {
            Class <Street> streetClass = Street.class;
            Constructor <?> [] declaredConstructors = streetClass.getDeclaredConstructors();
-           locatedInTheCity = (Street) declaredConstructors [1].newInstance(list.get(3), Double.parseDouble(list.get(4)), Double.parseDouble(list.get(5)));
+           locatedInTheCity = (Street) declaredConstructors [0].newInstance(list.get(3), Double.parseDouble(list.get(4)), Double.parseDouble(list.get(5)));
        } else if (list.get(1).equals("Park")) {
            Class <Park> parkClass = Park.class;
            Constructor <?> [] declaredConstructors = parkClass.getDeclaredConstructors();
-           locatedInTheCity = (Park) declaredConstructors [1].newInstance(list.get(3), Double.parseDouble(list.get(4)), Double.parseDouble(list.get(5)));
+           locatedInTheCity = (Park) declaredConstructors [0].newInstance(list.get(3), Double.parseDouble(list.get(4)), Double.parseDouble(list.get(5)));
        }
        locatedInTheCity.setCityName(list.get(0));
        return locatedInTheCity;
@@ -70,7 +72,12 @@ public final class Manager {
         cities.stream()
                 .forEach(a -> System.out.println(a.getName() + " " + a.getParks()));
 
-        System.out.println(Manager.buildCityReflectively("Dresden"));
+        // reflection
 
+        City dresden = Manager.buildCityReflectively("Dresden");
+        List <String> list = List.of("Dresden", "Street", "1ac301e9-c16a-4873-805c-a890baa93970", "St.Perersburg st", "10", "1000");
+        Street street = (Street) Manager.paramsToLocatedInTheCityReflectively(list);
+        dresden.AddStreetToCity(street);
+        System.out.println(dresden.getStreets());
     }
 }
