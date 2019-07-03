@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -10,6 +12,28 @@ public final class Manager {
     }
 
     static Set<City> cities = new HashSet<>();
+
+   static City buildCityReflectively (String cityName) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+       Class <City> cityClass = City.class;
+       Constructor <?> [] declaredConstructors = cityClass.getDeclaredConstructors();
+       City newCity = (City) declaredConstructors [0].newInstance(cityName);
+       return newCity;
+   }
+
+   static LocatedInTheCity paramsToLocatedInTheCityReflectively (List <String> list) throws IllegalAccessException, InvocationTargetException, InstantiationException{
+      LocatedInTheCity locatedInTheCity = null;
+       if (list.get(1).equals("Street")) {
+           Class <Street> streetClass = Street.class;
+           Constructor <?> [] declaredConstructors = streetClass.getDeclaredConstructors();
+           locatedInTheCity = (Street) declaredConstructors [1].newInstance(list.get(3), Double.parseDouble(list.get(4)), Double.parseDouble(list.get(5)));
+       } else if (list.get(1).equals("Park")) {
+           Class <Park> parkClass = Park.class;
+           Constructor <?> [] declaredConstructors = parkClass.getDeclaredConstructors();
+           locatedInTheCity = (Park) declaredConstructors [1].newInstance(list.get(3), Double.parseDouble(list.get(4)), Double.parseDouble(list.get(5)));
+       }
+       locatedInTheCity.setCityName(list.get(0));
+       return locatedInTheCity;
+   }
 
     static LocatedInTheCity paramsToLocatedInTheCity(List<String> list) {
         LocatedInTheCity locatedInTheCity = null;
@@ -39,12 +63,14 @@ public final class Manager {
                 .collect(Collectors.toSet());
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         cities = getFromBase("C:\\practice\\City\\src\\base.txt");
         cities.stream()
                 .forEach(a -> System.out.println(a.getName() + " " + a.getStreets()));
         cities.stream()
                 .forEach(a -> System.out.println(a.getName() + " " + a.getParks()));
+
+        System.out.println(Manager.buildCityReflectively("Dresden"));
 
     }
 }
